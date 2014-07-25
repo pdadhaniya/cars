@@ -12,14 +12,30 @@ class Car
 		"I'm a car! I've driven #{@distance} and have #{@fuel} gallons gas left"
 	end
 
-	def initialize(color='blue')
+	def initialize(color='blue', convertible=false)
 		@fuel = 10
 		@distance = 0
 		@color = color # color attribute when car is created/initialized 
+		@convertible = convertible # instance variable for convertible
 		if @@cars_per_color[color]
 			@@cars_per_color[color] += 1 #updates hash with color and increments count of color
 		else 
 			@@cars_per_color[color] = 1 #adds new color with value of 1
+		end
+		if @convertible #for convertibles, the roof will be open
+			@roof_status = "roof is open"
+		end
+	end
+
+	def top_down # method to open the roof for a convertible
+		if @convertible
+			@roof_status = "the roof of the convertible is opening"
+		end
+	end
+
+	def close_top #method to close the roof of the convertible
+		if @convertible
+			@roof_status = "the roof of the convertible is closing"
 		end
 	end
 
@@ -32,7 +48,7 @@ class Car
 	def self.most_popular_color #adding method for most_popular_color
 		the_color = @@cars_per_color.max_by { |x, y| y }
 		puts the_color
-		#the code takes the value of the most popular
+		#the code takes the value of the most popular but why is it putting color and value?
 	end
 
 	def drive(miles)
