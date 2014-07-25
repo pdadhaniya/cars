@@ -1,11 +1,38 @@
 class Car
+
+	@@total_car_count = 0
+	@@cars_per_color = Hash.new
+
+	# starting the method with self means it belongs to the class instead of the instance
+	def self.total_car_count
+		@@total_car_count
+	end
+
 	def to_s()
 		"I'm a car! I've driven #{@distance} and have #{@fuel} gallons gas left"
 	end
 
-	def initialize()
+	def initialize(color='blue')
 		@fuel = 10
 		@distance = 0
+		@color = color # color attribute when car is created/initialized 
+		if @@cars_per_color[color]
+			@@cars_per_color[color] += 1 #updates hash with color and increments count of color
+		else 
+			@@cars_per_color[color] = 1 #adds new color with value of 1
+		end
+	end
+
+	def color=(new_color)
+		@@cars_per_color[@color] -= 1 #decrements count for old color; will this work?
+		@color = new_color #setter for new color
+		@@cars_per_color[@color] += 1 #increments count for new color
+	end
+
+	def self.most_popular_color #adding method for most_popular_color
+		the_color = @@cars_per_color.max_by { |x, y| y }
+		puts the_color
+		#the code takes the value of the most popular
 	end
 
 	def drive(miles)
@@ -37,3 +64,6 @@ car_a.drive(232)
 car_b.drive(117)
 puts car_a
 puts car_b
+
+best_color = Car.most_popular_color
+Car.new(best_color)
